@@ -1,6 +1,5 @@
 import { Button } from "@/components/Button";
-import { Field } from "@/components/Field";
-import { FormGrid } from "@/components/FormGrid";
+import { Field, FormGrid } from "@/components/Form";
 import { Section } from "@/components/Section";
 import { SubHeader } from "@/components/SubHeader";
 import { Actions, TableCell, TableHeader, TableRow } from "@/components/Table";
