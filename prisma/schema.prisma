@@ -22,9 +22,9 @@ model Referral {
   email            String
   phone            String
   homeNameOrNumber String
-  Street           String
-  Suburb           String
-  State            String
+  street           String
+  suburb           String
+  state            String
   postcode         String
   country          String
 }
