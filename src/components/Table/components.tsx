@@ -1,4 +1,3 @@
-import { Referral } from "@prisma/client";
 import { Edit2, Trash2 } from "react-feather";
 
 export const TableHeader = ({ children }: { children: string }) => (
