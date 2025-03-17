@@ -13,12 +13,20 @@ export const FormGrid = ({
   </div>
 );
 
-export const Field = ({ label, name }: { label: string; name: string }) => {
+export const Field = ({
+  label,
+  name,
+  required,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+}) => {
   const { register } = useFormContext();
 
   return (
     <div className="col-span-1 mt-5">
-      <label htmlFor="name" className="uppercase text-sm">
+      <label htmlFor="name" className="uppercase text-sm ">
         {label}
       </label>
       <input
@@ -26,6 +34,7 @@ export const Field = ({ label, name }: { label: string; name: string }) => {
         type="text"
         id={name}
         {...register(name)}
+        required={required}
       />
     </div>
   );
