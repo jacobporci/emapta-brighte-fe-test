@@ -1,3 +1,4 @@
+import { Referral } from "@prisma/client";
 import { Edit2, Trash2 } from "react-feather";
 
 export const TableHeader = ({ children }: { children: string }) => (
@@ -14,9 +15,13 @@ export const TableCell = ({
   children: string | React.ReactNode;
 }) => <td className="text-left py-3">{children}</td>;
 
-export const Actions = () => (
+type tActions = {
+  onEdit: () => void;
+};
+
+export const Actions = ({ onEdit }: tActions) => (
   <div className="flex gap-2 text-gray-400">
-    <button>
+    <button onClick={() => onEdit()}>
       <Edit2 />
     </button>
     <button>

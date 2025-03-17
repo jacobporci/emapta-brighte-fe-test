@@ -3,8 +3,13 @@
 import { useReferrals } from "@/hooks/useReferrals";
 import { Section } from "../Section";
 import { Actions, TableCell, TableHeader, TableRow } from "./components";
+import { Referral } from "@prisma/client";
 
-export const Table = () => {
+type tTable = {
+  onEdit: (data: Referral) => void;
+};
+
+export const Table = ({ onEdit }: tTable) => {
   const { data } = useReferrals();
 
   return (
@@ -21,14 +26,14 @@ export const Table = () => {
             </TableRow>
           </thead>
           <tbody>
-            {data?.map(({ id, givenName, surname, email, phone }) => (
-              <TableRow key={id}>
-                <TableCell>{givenName}</TableCell>
-                <TableCell>{surname}</TableCell>
-                <TableCell>{email}</TableCell>
-                <TableCell>{phone}</TableCell>
+            {data?.map((referral) => (
+              <TableRow key={referral.id}>
+                <TableCell>{referral.givenName}</TableCell>
+                <TableCell>{referral.surname}</TableCell>
+                <TableCell>{referral.email}</TableCell>
+                <TableCell>{referral.phone}</TableCell>
                 <TableCell>
-                  <Actions />
+                  <Actions onEdit={() => onEdit(referral)} />
                 </TableCell>
               </TableRow>
             ))}

@@ -7,11 +7,19 @@ import { useCreateReferral } from "@/hooks/useCreateReferral";
 import { Referral } from "@prisma/client";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Field, FormGrid } from "./components";
+import { useEffect } from "react";
 
-export const Form = () => {
+type tForm = {
+  referral?: Referral;
+};
+export const Form = ({ referral }: tForm) => {
   const form = useForm<Referral>();
 
   const { mutate } = useCreateReferral();
+
+  useEffect(() => {
+    if (referral) form.reset(referral);
+  }, [form, referral]);
 
   const handleSubmit: SubmitHandler<Referral> = (data) => {
     mutate(data);
