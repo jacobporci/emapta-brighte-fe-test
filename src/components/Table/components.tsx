@@ -1,7 +1,9 @@
 import { Edit2, Trash2 } from "react-feather";
 
 export const TableHeader = ({ children }: { children: string }) => (
-  <th className="text-left">{children}</th>
+  <th className="text-left text-ellipsis whitespace-nowrap overflow-hidden">
+    {children}
+  </th>
 );
 
 export const TableRow = ({ children }: { children: React.ReactNode[] }) => (
