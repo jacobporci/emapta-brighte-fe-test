@@ -11,14 +11,29 @@ import { useEffect } from "react";
 
 type tForm = {
   referral?: Referral;
+  onReset: () => void;
 };
-export const Form = ({ referral }: tForm) => {
-  const form = useForm<Referral>();
+
+const DEFAULT_VALUES: Partial<Referral> = {
+  givenName: "",
+  surname: "",
+  email: "",
+  phone: "",
+  homeNameOrNumber: "",
+  street: "",
+  suburb: "",
+  state: "",
+  postcode: "",
+  country: "",
+};
+
+export const Form = ({ referral, onReset }: tForm) => {
+  const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });
 
   const { mutate } = useCreateReferral();
 
   useEffect(() => {
-    if (referral) form.reset(referral);
+    form.reset(referral ?? DEFAULT_VALUES);
   }, [form, referral]);
 
   const handleSubmit: SubmitHandler<Referral> = (data) => {
@@ -46,12 +61,21 @@ export const Form = ({ referral }: tForm) => {
             <Field label="postcode" name="postcode" />
             <Field label="country" name="country" />
           </FormGrid>
-          <FormGrid className="mt-10">
+          <div className="flex flex-col md:flex-row mt-10 gap-4">
             <Button>upload avatar</Button>
             <Button className="bg-[#67dc7e] text-white" type="submit">
-              create referral
+              {referral ? "update referral" : "create referral"}
             </Button>
-          </FormGrid>
+          </div>
+          <Button
+            className="mt-4 md:w-full text-red-500"
+            onClick={(e) => {
+              e.preventDefault();
+              onReset();
+            }}
+          >
+            Reset
+          </Button>
         </form>
       </FormProvider>
     </Section>
