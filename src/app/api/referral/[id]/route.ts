@@ -1,9 +1,14 @@
+import { Referral } from "@prisma/client";
 import { prisma } from "../../../../../lib/prisma";
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export async function DELETE(request: Request, props: Props) {
+  const params = await props.params;
   const data = await prisma.referral.delete({
     where: {
       id: params.id,
