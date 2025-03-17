@@ -26,10 +26,18 @@ type tActions = {
 
 export const Actions = ({ onEdit, onDelete, disabled }: tActions) => (
   <div className="flex gap-2 text-gray-400 max-w-1/4">
-    <button onClick={() => onEdit()} disabled={disabled}>
+    <button
+      className="cursor-pointer"
+      onClick={() => onEdit()}
+      disabled={disabled}
+    >
       <Edit2 />
     </button>
-    <button onClick={() => onDelete()} disabled={disabled}>
+    <button
+      className="cursor-pointer"
+      onClick={() => onDelete()}
+      disabled={disabled}
+    >
       <Trash2 />
     </button>
   </div>
