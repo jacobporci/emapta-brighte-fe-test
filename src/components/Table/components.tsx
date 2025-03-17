@@ -40,6 +40,7 @@ export const Actions = ({ onEdit, onDelete, disabled }: tActions) => (
       className="cursor-pointer"
       onClick={() => onDelete()}
       disabled={disabled}
+      aria-label="Delete"
     >
       <Trash2 />
     </button>
