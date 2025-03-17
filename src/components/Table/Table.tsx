@@ -4,13 +4,15 @@ import { useReferrals } from "@/hooks/useReferrals";
 import { Section } from "../Section";
 import { Actions, TableCell, TableHeader, TableRow } from "./components";
 import { Referral } from "@prisma/client";
+import { useDeleteReferral } from "@/hooks/useDeleteReferral";
 
 type tTable = {
   onEdit: (data: Referral) => void;
 };
 
 export const Table = ({ onEdit }: tTable) => {
-  const { data } = useReferrals();
+  const { data, isPending } = useReferrals();
+  const { mutate, isPending: isDeleting } = useDeleteReferral();
 
   return (
     <Section className="bg-gray-100 px-10 py-20">
@@ -33,7 +35,11 @@ export const Table = ({ onEdit }: tTable) => {
                 <TableCell>{referral.email}</TableCell>
                 <TableCell>{referral.phone}</TableCell>
                 <TableCell>
-                  <Actions onEdit={() => onEdit(referral)} />
+                  <Actions
+                    onEdit={() => onEdit(referral)}
+                    onDelete={() => mutate(referral.id)}
+                    disabled={isPending || isDeleting}
+                  />
                 </TableCell>
               </TableRow>
             ))}

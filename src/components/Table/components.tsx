@@ -16,14 +16,16 @@ export const TableCell = ({
 
 type tActions = {
   onEdit: () => void;
+  onDelete: () => void;
+  disabled?: boolean;
 };
 
-export const Actions = ({ onEdit }: tActions) => (
+export const Actions = ({ onEdit, onDelete, disabled }: tActions) => (
   <div className="flex gap-2 text-gray-400">
-    <button onClick={() => onEdit()}>
+    <button onClick={() => onEdit()} disabled={disabled}>
       <Edit2 />
     </button>
-    <button>
+    <button onClick={() => onDelete()} disabled={disabled}>
       <Trash2 />
     </button>
   </div>
