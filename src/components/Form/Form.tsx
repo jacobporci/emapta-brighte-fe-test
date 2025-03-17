@@ -8,6 +8,7 @@ import { Referral } from "@prisma/client";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Field, FormGrid } from "./components";
 import { useEffect } from "react";
+import { useUpdateReferral } from "@/hooks/useUpdateReferral";
 
 type tForm = {
   referral?: Referral;
@@ -30,14 +31,19 @@ const DEFAULT_VALUES: Partial<Referral> = {
 export const Form = ({ referral, onReset }: tForm) => {
   const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });
 
-  const { mutate } = useCreateReferral();
+  const { mutate: createReferralMutation } = useCreateReferral();
+  const { mutate: updateReferralMutation } = useUpdateReferral();
 
   useEffect(() => {
     form.reset(referral ?? DEFAULT_VALUES);
   }, [form, referral]);
 
   const handleSubmit: SubmitHandler<Referral> = (data) => {
-    mutate(data);
+    if (referral?.id) {
+      updateReferralMutation(data);
+    } else {
+      createReferralMutation(data);
+    }
   };
 
   return (
