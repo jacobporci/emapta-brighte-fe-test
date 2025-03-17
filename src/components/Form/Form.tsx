@@ -12,7 +12,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import { Field, FormGrid } from "./components";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useUpdateReferral } from "@/hooks/useUpdateReferral";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useQueryClient } from "@tanstack/react-query";
@@ -37,13 +37,20 @@ const DEFAULT_VALUES: Partial<Referral> = {
 
 export const Form = ({ referral, onReset }: tForm) => {
   const queryClient = useQueryClient();
-  const { mutate: createReferralMutation } = useCreateReferral({
-    onSuccess: onReset,
-  });
-  const { mutate: updateReferralMutation } = useUpdateReferral({
-    onSuccess: onReset,
-  });
+  const { mutate: createReferralMutation, isPending: isCreateReferralPending } =
+    useCreateReferral({
+      onSuccess: () => form.reset(DEFAULT_VALUES),
+    });
+  const { mutate: updateReferralMutation, isPending: isUpdateReferralPending } =
+    useUpdateReferral({
+      onSuccess: onReset,
+    });
   const { data } = useReferrals();
+
+  const isDisabled = useMemo(
+    () => isCreateReferralPending || isUpdateReferralPending,
+    [isCreateReferralPending, isUpdateReferralPending]
+  );
 
   const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });
   const givenName = useWatch({ control: form.control, name: "givenName" });
@@ -90,10 +97,10 @@ export const Form = ({ referral, onReset }: tForm) => {
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <SubHeader label="personal details" />
           <FormGrid>
-            <Field label="GIVEN NAME" name="givenName" />
-            <Field label="SURNAME" name="surname" />
-            <Field label="EMAIL" name="email" />
-            <Field label="PHONE" name="phone" />
+            <Field label="GIVEN NAME" name="givenName" required />
+            <Field label="SURNAME" name="surname" required />
+            <Field label="EMAIL" name="email" required />
+            <Field label="PHONE" name="phone" required />
           </FormGrid>
           <SubHeader label="address" />
           <FormGrid>
@@ -105,8 +112,12 @@ export const Form = ({ referral, onReset }: tForm) => {
             <Field label="country" name="country" />
           </FormGrid>
           <div className="flex flex-col md:flex-row mt-10 gap-4">
-            <Button>upload avatar</Button>
-            <Button className="bg-[#67dc7e] text-white" type="submit">
+            <Button disabled={isDisabled}>upload avatar</Button>
+            <Button
+              className="bg-[#67dc7e] text-white"
+              type="submit"
+              disabled={isDisabled}
+            >
               {referral ? "update referral" : "create referral"}
             </Button>
           </div>
@@ -116,6 +127,7 @@ export const Form = ({ referral, onReset }: tForm) => {
               e.preventDefault();
               onReset();
             }}
+            disabled={isDisabled}
           >
             Reset
           </Button>
