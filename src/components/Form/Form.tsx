@@ -37,8 +37,12 @@ const DEFAULT_VALUES: Partial<Referral> = {
 
 export const Form = ({ referral, onReset }: tForm) => {
   const queryClient = useQueryClient();
-  const { mutate: createReferralMutation } = useCreateReferral();
-  const { mutate: updateReferralMutation } = useUpdateReferral();
+  const { mutate: createReferralMutation } = useCreateReferral({
+    onSuccess: onReset,
+  });
+  const { mutate: updateReferralMutation } = useUpdateReferral({
+    onSuccess: onReset,
+  });
   const { data } = useReferrals();
 
   const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });

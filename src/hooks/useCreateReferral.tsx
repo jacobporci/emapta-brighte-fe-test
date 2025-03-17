@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
 import { Referral } from "@prisma/client";
 
-export const useCreateReferral = () => {
+export const useCreateReferral = ({ onSuccess }: { onSuccess: () => void }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -21,6 +21,7 @@ export const useCreateReferral = () => {
         ...oldData,
         data,
       ]);
+      onSuccess();
     },
   });
 };
