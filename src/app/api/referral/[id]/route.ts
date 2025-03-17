@@ -1,4 +1,3 @@
-import { Referral } from "@prisma/client";
 import { prisma } from "../../../../../lib/prisma";
 
 type Props = {
