@@ -15,7 +15,7 @@ export const useDeleteReferral = () => {
       return res.data;
     },
     onMutate: () => {
-      toast.loading("Creating referral...", { toastId: TOAST_ID });
+      toast.loading("Deleting referral...", { toastId: TOAST_ID });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["referrals"] });
