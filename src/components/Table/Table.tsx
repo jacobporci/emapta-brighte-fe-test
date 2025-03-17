@@ -17,7 +17,7 @@ export const Table = ({ onEdit }: tTable) => {
   return (
     <Section className="bg-gray-100 px-10 py-20">
       <div className="bg-white w-full h-full px-5 py-10">
-        <table className="w-full">
+        <table className="w-full table-fixed">
           <thead>
             <TableRow>
               <TableHeader>GIVEN NAME</TableHeader>

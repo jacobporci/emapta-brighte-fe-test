@@ -12,7 +12,11 @@ export const TableCell = ({
   children,
 }: {
   children: string | React.ReactNode;
-}) => <td className="text-left py-3">{children}</td>;
+}) => (
+  <td className="text-left py-3 px-1 text-ellipsis whitespace-nowrap overflow-hidden">
+    {children}
+  </td>
+);
 
 type tActions = {
   onEdit: () => void;
@@ -21,7 +25,7 @@ type tActions = {
 };
 
 export const Actions = ({ onEdit, onDelete, disabled }: tActions) => (
-  <div className="flex gap-2 text-gray-400">
+  <div className="flex gap-2 text-gray-400 max-w-1/4">
     <button onClick={() => onEdit()} disabled={disabled}>
       <Edit2 />
     </button>
