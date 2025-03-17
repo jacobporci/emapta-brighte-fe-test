@@ -5,10 +5,17 @@ import { Section } from "@/components/Section";
 import { SubHeader } from "@/components/SubHeader";
 import { useCreateReferral } from "@/hooks/useCreateReferral";
 import { Referral } from "@prisma/client";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FormProvider,
+  SubmitHandler,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import { Field, FormGrid } from "./components";
 import { useEffect } from "react";
 import { useUpdateReferral } from "@/hooks/useUpdateReferral";
+import { useReferrals } from "@/hooks/useReferrals";
+import { useQueryClient } from "@tanstack/react-query";
 
 type tForm = {
   referral?: Referral;
@@ -29,14 +36,40 @@ const DEFAULT_VALUES: Partial<Referral> = {
 };
 
 export const Form = ({ referral, onReset }: tForm) => {
-  const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });
-
+  const queryClient = useQueryClient();
   const { mutate: createReferralMutation } = useCreateReferral();
   const { mutate: updateReferralMutation } = useUpdateReferral();
+  const { data } = useReferrals();
+
+  const form = useForm<Referral>({ defaultValues: DEFAULT_VALUES });
+  const givenName = useWatch({ control: form.control, name: "givenName" });
+  const surname = useWatch({ control: form.control, name: "surname" });
+  const email = useWatch({ control: form.control, name: "email" });
+  const phone = useWatch({ control: form.control, name: "phone" });
 
   useEffect(() => {
     form.reset(referral ?? DEFAULT_VALUES);
   }, [form, referral]);
+
+  useEffect(() => {
+    if (referral && data) {
+      const index = data?.findIndex(({ id }) => id === referral.id);
+
+      const referralData = {
+        ...data?.[index],
+        givenName,
+        surname,
+        email,
+        phone,
+      };
+
+      queryClient.setQueryData(["referrals"], (oldData: Referral[]) => {
+        const newData = [...oldData];
+        newData[index] = referralData;
+        return newData;
+      });
+    }
+  }, [data, givenName, queryClient, referral, surname, email, phone]);
 
   const handleSubmit: SubmitHandler<Referral> = (data) => {
     if (referral?.id) {
