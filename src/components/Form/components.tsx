@@ -26,7 +26,7 @@ export const Field = ({
 
   return (
     <div className="col-span-1 mt-5">
-      <label htmlFor="name" className="uppercase text-sm ">
+      <label htmlFor={name} className="uppercase text-sm ">
         {label}
       </label>
       <input

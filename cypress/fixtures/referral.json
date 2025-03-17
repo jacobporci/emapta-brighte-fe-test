@@ -1,0 +1,15 @@
+{
+  "id": "id-1",
+  "givenName": "John",
+  "surname": "Doe",
+  "email": "johndoe@test.com",
+  "phone": "1234567890",
+  "country": "",
+  "homeNameOrNumber": "",
+  "postcode": "",
+  "state": "",
+  "street": "",
+  "suburb": "",
+  "createdAt": "2025-03-17T10:20:16.960Z",
+  "updatedAt": "2025-03-17T10:20:16.960Z"
+}
