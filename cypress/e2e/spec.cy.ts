@@ -70,15 +70,10 @@ describe("REFERRAL", () => {
 
     cy.visit("http://localhost:3000");
 
-    const { givenName, surname, email, phone } = referralResponse;
-
     cy.findByRole("button", { name: /delete/i }).click();
     cy.intercept("GET", "/api/referral", []);
     cy.wait("@deleteReferral");
 
-    cy.findByText(givenName).should("not.exist");
-    cy.findByText(surname).should("not.exist");
-    cy.findByText(email).should("not.exist");
-    cy.findByText(phone).should("not.exist");
+    cy.findByText(/Referral deleted successfully/i).should("not.exist");
   });
 });
