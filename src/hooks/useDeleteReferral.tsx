@@ -2,7 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
+import { toast } from "react-toastify";
 
+const TOAST_ID = "deleteReferral";
 export const useDeleteReferral = () => {
   const queryClient = useQueryClient();
 
@@ -12,6 +14,25 @@ export const useDeleteReferral = () => {
       const res = await axiosInstance.delete(`/referral/${id}`);
       return res.data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["referrals"] }),
+    onMutate: () => {
+      toast.loading("Creating referral...", { toastId: TOAST_ID });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["referrals"] });
+      toast.update(TOAST_ID, {
+        type: "success",
+        render: "Referral deleted successfully",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    },
+    onError: () => {
+      toast.update(TOAST_ID, {
+        type: "error",
+        render: "Failed to delete referral",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    },
   });
 };
